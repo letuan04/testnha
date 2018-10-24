@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <title>Blank App</title>
+        <h1>Event & Notification</h1>
+    </head>
+    <body>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" charset="utf-8">
+            document.addEventListener("deviceready", onDeviceReady, false);
+
+            function onDeviceReady(){
+                alert("on device ready event");
+                document.addEventListener("online", onOnline, false);
+                document.addEventListener("offline", onOffline, false);
+                document.addEventListener("pause", AppPause, false);
+                document.addEventListener("resume", AppResume, false);
+                document.addEventListener("searchbutton", searchButton, false);
+                document.addEventListener("menubutton", menuButton, false);
+                document.addEventListener("backbutton", backButton, false);
+                document.addEventListener("volumedownbutton", volumedownButton, false);
+                document.addEventListener("volumeupbutton", volumeupButton, false);
+                document.getElementById("btn1").addEventListener("click", showBattery);
+
+                //                document.getElementById("btn2").addEventListener("click", checkOnline);
+                //                document.getElementById("btn3").addEventListener("click", checkOffline);
+
+
+
+            }
+            function onOnline() {
+                alert("Device is ONLINE!!");
+            }
+            function onOffline() {
+                alert("Device is OFFLINE!!");
+            }
+            function AppPause(){
+                alert("App Paused!!");
+            }
+            function AppResume(){
+                alert("App Resumed!!");
+            }
+            function showBattery(){
+                window.addEventListener("batterystatus", onBatteryStatus, false);
+            }
+            function onBatteryStatus(info){
+                alert("BATTERY STATUS: Level: " + info.level + " isPlugged: " + info.isPlugged);
+            }
+            function searchButton(){
+                alert("you pressed SEARCH button!!");
+            }
+            function menuButton(){
+                alert("you pressed MENU button!!");
+            }
+            function backButton(){
+                alert("you pressed BACK button!!");
+            }
+            function volumedownButton(){
+                alert("you pressed VOLUME DOWN button!!");
+            }
+            function volumeupButton(){
+                alert("you pressed VOLUME UP button!!");
+            }
+            function showAlert(){
+                navigator.notification.alert(
+                    //message
+                    "This is an cordova notification alert",
+                    //callback
+                    showJSAlert,
+                    //tittle
+                    "Notification alert ",
+                    //button
+                    "Done"
+                );
+            }
+
+            function showJSAlert() {
+                alert("This is normal JS alert");
+            }
+
+            var option = ["OK", "NO"];
+            function showConfirm(){
+                navigator.notification.confirm(
+                    "Please choose an option",
+                    confirmCallback,
+                    "Test confirm",
+                    option
+                );
+            }
+
+            function confirmCallback(theIndex){
+                alert("You have selected: " +option[theIndex-1]);
+            }
+
+            function pushNotification(){
+                cordova.plugins.notification.local.schedule({
+                    id: 1,
+                    title: 'Push notification',
+                    text: 'This is first push notification'
+                });
+            }
+        </script>
+
+        <div>
+            <button id="btn1" style="width: 100%; height: 100px; margin-top: 10px">Event Show Battery Status</button>
+            <button  style="width: 100%; height: 100px;  margin-top: 10px" onclick="showAlert()">Show Notification Alert</button>
+            <button  style="width: 100%; height: 100px;  margin-top: 10px" onclick="showConfirm()">Show Notification Comfirm</button>
+            <button  style="width: 100%; height: 100px;  margin-top: 10px" onclick="pushNotification()">Send Push Notification</button>
+
+        </div>
+
+    </body>
+</html>
